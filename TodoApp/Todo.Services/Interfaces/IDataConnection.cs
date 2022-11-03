@@ -7,5 +7,7 @@ namespace Todo.Services.Interfaces
         public Task<List<User>> GetAllUsersAsync();
 
         //TODO - დაწერეთ ფუნქცია რომელიც User-ების მსგავსად ბაზიდან წამოიღებს ყველა Todo-ს.
+
+        //TODO - დაწერეთ კიდევ ერთი ფუნქცია
     }
 }
