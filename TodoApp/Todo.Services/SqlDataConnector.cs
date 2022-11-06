@@ -7,6 +7,54 @@ namespace Todo.Services
 {
     public class SqlDataConnector : IDataConnection
     {
+        public async Task<List<TodoApp.Library.Todo>> GetAllTodosPerUserAsync(User model)
+        {
+            const string sqlExpression = "sp_allSpecificUserTodos";
+            List<TodoApp.Library.Todo> result = new();
+
+            using (SqlConnection connection = new(GlobalConfig.ConnectionString()))
+            {
+                try
+                {
+                    await connection.OpenAsync();
+
+                    SqlCommand command = new(sqlExpression, connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@userId", model.UserId);
+
+                    SqlDataReader reader = await command.ExecuteReaderAsync();
+
+                    if (reader.HasRows)
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            result.Add(new TodoApp.Library.Todo
+                            {
+                                TodoId = reader.GetInt32(0),
+                                Title = reader.GetString(1),
+                                Description = reader.GetString(2),
+                                StartDate = reader.GetDateTime(3),
+                                DueDate = reader.GetDateTime(4),
+                                Status = reader.GetString(5),
+                                Priority = reader.GetString(6),
+                                UserId = reader.GetInt32(7)
+                            });
+                        }
+                    }
+                }
+                catch (SqlException)
+                {
+                    throw;
+                }
+                finally
+                {
+                    await connection.CloseAsync();
+                }
+
+                return result;
+            }
+        }
         public async Task<List<User>> GetAllUsersAsync()
         {
             const string sqlExpression = "sp_AllUsers";
