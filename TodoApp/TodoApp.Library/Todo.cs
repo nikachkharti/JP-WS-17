@@ -10,5 +10,8 @@
         public string Status { get; set; }
         public string Priority { get; set; }
         public int UserId { get; set; }
+
+        public override bool Equals(object obj) => new TodoEquilityComparer().Equals(obj);
+        public override int GetHashCode() => new TodoEquilityComparer().GetHashCode();
     }
 }
