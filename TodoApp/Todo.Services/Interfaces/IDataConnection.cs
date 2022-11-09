@@ -17,14 +17,17 @@ namespace Todo.Services.Interfaces
         public Task<User> LoginUserAsync(string email);
 
         /// <summary>
+        /// Registers new user.
+        /// </summary>
+        /// <param name="model">User model to register</param>
+        /// <returns>Registered user.</returns>
+        public Task<User> RegisterUserAsync(User model);
+
+        /// <summary>
         /// Get all toos for a logged in user.
         /// </summary>
         /// <param name="model">Logged in user</param>
         /// <returns>List of todos</returns>
         public Task<List<TodoApp.Library.Todo>> GetAllTodosPerUserAsync(User model);
-
-
-        //TODO -- User Login Functioality has to be added
-        //TODO -- User Registration Functioality has to be added
     }
 }
