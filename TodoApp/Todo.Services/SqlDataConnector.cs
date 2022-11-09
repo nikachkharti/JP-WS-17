@@ -97,7 +97,6 @@ namespace Todo.Services
                 return result;
             }
         }
-
         public async Task<User> LoginUserAsync(string email)
         {
             const string sqlExpression = "sp_SingleUser";
@@ -139,6 +138,36 @@ namespace Todo.Services
                 return result;
             }
 
+        }
+        public async Task<User> RegisterUserAsync(User model)
+        {
+            const string sqlExpression = "[dbo].[sp_registerUser]";
+
+            using (SqlConnection connection = new(GlobalConfig.ConnectionString()))
+            {
+                try
+                {
+                    await connection.OpenAsync();
+                    SqlCommand command = new(sqlExpression, connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@firstName", model.FirstName);
+                    command.Parameters.AddWithValue("@lastName", model.LastName);
+                    command.Parameters.AddWithValue("@email", model.Email);
+
+                    await command.ExecuteNonQueryAsync();
+                }
+                catch (SqlException)
+                {
+                    throw;
+                }
+                finally
+                {
+                    await connection.CloseAsync();
+                }
+            }
+
+            return model;
         }
     }
 }
