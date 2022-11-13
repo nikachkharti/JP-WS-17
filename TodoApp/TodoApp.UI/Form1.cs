@@ -9,7 +9,7 @@ namespace TodoApp.UI
         {
             InitializeComponent();
         }
-        public User LoggedInUser { get; set; }
+        public static User? LoggedInUser { get; set; }
 
         private void newUserLink_Click(object sender, EventArgs e)
         {
