@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TodoApp.Library;
 
 namespace TodoApp.UI
 {
@@ -15,6 +16,13 @@ namespace TodoApp.UI
         public DashboardForm()
         {
             InitializeComponent();
+        }
+        public User LoggedInUser { get; set; }
+
+        private void DashboardForm_Load(object sender, EventArgs e)
+        {
+            LoggedInUser = LoginForm.LoggedInUser;
+            welcomeLabel.Text += LoggedInUser.FirstName;
         }
     }
 }
