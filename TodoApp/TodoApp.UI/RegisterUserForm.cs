@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using Todo.Services;
+using TodoApp.Library;
 
 namespace TodoApp.UI
 {
@@ -15,6 +8,53 @@ namespace TodoApp.UI
         public RegisterUserForm()
         {
             InitializeComponent();
+        }
+
+        private void registerBtn_Click(object sender, EventArgs e)
+        {
+            User userToAdd = new()
+                {
+                    FirstName = firstNameValue.Text,
+                    LastName = lastNameValue.Text,
+                    Email = emailValue.Text
+                };
+
+            if (EmailIsValid())
+            {
+                if (UserIsUnique(userToAdd))
+                {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                    GlobalConfig.ConnectionType.RegisterUser(userToAdd);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                    MessageBox.Show("გილოცავთ, თქვენ გაირეთ რეგისტრაცია წარმატებით", "მომხმარებელი დარეგისტრირდა", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ClearForm();
+                }
+                else
+                {
+                    MessageBox.Show("თქვენს მიერ შეყვანილი მომხმარებელი უკვე არსებობს", "დუბლირებული მომხმარებელი", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("თქვენს მიერ შეყვანილი მონაცემები არასწორია, სცადეთ ხელახლა", "არასწორი ინფორმაცია", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private bool UserIsUnique(User userToCheck)
+        {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            return !GlobalConfig.ConnectionType.GetAllUsers().Any(x => x.Email.Equals(userToCheck.Email, StringComparison.OrdinalIgnoreCase));
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+        }
+        private void ClearForm()
+        {
+            firstNameValue.Text = string.Empty;
+            lastNameValue.Text = string.Empty;
+            emailValue.Text = string.Empty;
+        }
+        private bool EmailIsValid()
+        {
+            return emailValue.Text.Contains('@') && emailValue.Text.Contains('.');
         }
     }
 }
