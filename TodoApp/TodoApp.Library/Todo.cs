@@ -13,5 +13,7 @@
 
         public override bool Equals(object obj) => new TodoEquilityComparer().Equals(obj);
         public override int GetHashCode() => new TodoEquilityComparer().GetHashCode();
+
+        public override string ToString() => Title;
     }
 }
