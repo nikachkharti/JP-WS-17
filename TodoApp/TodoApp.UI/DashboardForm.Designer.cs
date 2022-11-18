@@ -40,14 +40,12 @@
             this.importantLabel = new System.Windows.Forms.Label();
             this.mainLabel = new System.Windows.Forms.Label();
             this.TodoUserControlPanel = new System.Windows.Forms.Panel();
-            this.todoUserControl1 = new TodoApp.UI.TodoUserControl();
             this.sidebarPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.planedIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.starPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mainPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.logoPicture)).BeginInit();
-            this.TodoUserControlPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // welcomeLabel
@@ -175,20 +173,10 @@
             // 
             // TodoUserControlPanel
             // 
-            this.TodoUserControlPanel.Controls.Add(this.todoUserControl1);
             this.TodoUserControlPanel.Location = new System.Drawing.Point(263, 56);
             this.TodoUserControlPanel.Name = "TodoUserControlPanel";
             this.TodoUserControlPanel.Size = new System.Drawing.Size(1383, 690);
             this.TodoUserControlPanel.TabIndex = 2;
-            // 
-            // todoUserControl1
-            // 
-            this.todoUserControl1.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.todoUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.todoUserControl1.Location = new System.Drawing.Point(0, 0);
-            this.todoUserControl1.Name = "todoUserControl1";
-            this.todoUserControl1.Size = new System.Drawing.Size(1383, 690);
-            this.todoUserControl1.TabIndex = 0;
             // 
             // DashboardForm
             // 
@@ -211,7 +199,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.starPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mainPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.logoPicture)).EndInit();
-            this.TodoUserControlPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -231,6 +218,5 @@
         private Label myProfileLabel;
         private Label planedLabel;
         private Panel TodoUserControlPanel;
-        private TodoUserControl todoUserControl1;
     }
 }
