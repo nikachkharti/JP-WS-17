@@ -54,7 +54,7 @@
             this.welcomeLabel.Dock = System.Windows.Forms.DockStyle.Right;
             this.welcomeLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.welcomeLabel.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.welcomeLabel.Location = new System.Drawing.Point(1513, 0);
+            this.welcomeLabel.Location = new System.Drawing.Point(1317, 0);
             this.welcomeLabel.Name = "welcomeLabel";
             this.welcomeLabel.Size = new System.Drawing.Size(145, 28);
             this.welcomeLabel.TabIndex = 0;
@@ -175,7 +175,7 @@
             // 
             this.TodoUserControlPanel.Location = new System.Drawing.Point(263, 56);
             this.TodoUserControlPanel.Name = "TodoUserControlPanel";
-            this.TodoUserControlPanel.Size = new System.Drawing.Size(1383, 690);
+            this.TodoUserControlPanel.Size = new System.Drawing.Size(1189, 690);
             this.TodoUserControlPanel.TabIndex = 2;
             // 
             // DashboardForm
@@ -183,7 +183,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1658, 758);
+            this.ClientSize = new System.Drawing.Size(1462, 758);
             this.Controls.Add(this.TodoUserControlPanel);
             this.Controls.Add(this.sidebarPanel);
             this.Controls.Add(this.welcomeLabel);
