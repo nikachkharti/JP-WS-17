@@ -196,6 +196,7 @@
             this.editTodoBtn.TabIndex = 6;
             this.editTodoBtn.Text = "რედაქტირება";
             this.editTodoBtn.UseVisualStyleBackColor = false;
+            this.editTodoBtn.Click += new System.EventHandler(this.editTodoBtn_Click);
             // 
             // addTodoBtn
             // 
