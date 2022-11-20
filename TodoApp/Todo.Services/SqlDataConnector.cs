@@ -7,6 +7,42 @@ namespace Todo.Services
 {
     public class SqlDataConnector : IDataConnection
     {
+        public TodoApp.Library.Todo EditTodo(TodoApp.Library.Todo model)
+        {
+            const string sqlExpression = "sp_editTodo";
+
+            using (SqlConnection connection = new(GlobalConfig.ConnectionString()))
+            {
+                try
+                {
+                    connection.Open();
+                    SqlCommand command = new(sqlExpression,connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@title",model.Title);
+                    command.Parameters.AddWithValue("@description", model.Description);
+                    command.Parameters.AddWithValue("@startDate", model.StartDate);
+                    command.Parameters.AddWithValue("@dueDate", model.DueDate);
+                    command.Parameters.AddWithValue("@status", model.Status);
+                    command.Parameters.AddWithValue("@priority", model.Priority);
+                    command.Parameters.AddWithValue("@todoId", model.TodoId);
+
+                    command.ExecuteNonQuery();
+
+                }
+                catch (SqlException)
+                {
+                    throw;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+            return model;
+        }
+
         public List<TodoApp.Library.Todo> GetAllTodosPerUser(User model)
         {
             const string sqlExpression = "sp_allSpecificUserTodos";
