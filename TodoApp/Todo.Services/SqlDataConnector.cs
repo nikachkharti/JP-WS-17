@@ -42,7 +42,6 @@ namespace Todo.Services
 
             return model;
         }
-
         public List<TodoApp.Library.Todo> GetAllTodosPerUser(User model)
         {
             const string sqlExpression = "sp_allSpecificUserTodos";

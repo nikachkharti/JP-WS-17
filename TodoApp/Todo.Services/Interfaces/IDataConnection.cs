@@ -1,5 +1,10 @@
 ﻿using TodoApp.Library;
 
+// TODO - Register new todo functinality
+// TODO - Edit my profile functionality
+// TODO - Add to favorites
+// TODO - Sort Todos
+
 namespace Todo.Services.Interfaces
 {
     public interface IDataConnection
