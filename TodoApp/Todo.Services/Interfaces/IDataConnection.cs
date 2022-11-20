@@ -29,5 +29,12 @@ namespace Todo.Services.Interfaces
         /// <param name="model">Logged in user</param>
         /// <returns>List of todos</returns>
         public List<TodoApp.Library.Todo> GetAllTodosPerUser(User model);
+
+        /// <summary>
+        /// Edits todo in database
+        /// </summary>
+        /// <param name="model">Todo to edit</param>
+        /// <returns>Edited todo</returns>
+        public TodoApp.Library.Todo EditTodo(TodoApp.Library.Todo model);
     }
 }
