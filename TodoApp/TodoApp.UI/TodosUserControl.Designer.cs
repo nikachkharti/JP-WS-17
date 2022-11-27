@@ -43,6 +43,7 @@
             this.priorityLabel = new System.Windows.Forms.Label();
             this.editTodoBtn = new System.Windows.Forms.Button();
             this.addTodoBtn = new System.Windows.Forms.Button();
+            this.clearBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // todoListBox
@@ -213,11 +214,23 @@
             this.addTodoBtn.UseVisualStyleBackColor = false;
             this.addTodoBtn.Click += new System.EventHandler(this.addTodoBtn_Click);
             // 
+            // clearBtn
+            // 
+            this.clearBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.clearBtn.Location = new System.Drawing.Point(1049, 5);
+            this.clearBtn.Name = "clearBtn";
+            this.clearBtn.Size = new System.Drawing.Size(131, 29);
+            this.clearBtn.TabIndex = 7;
+            this.clearBtn.Text = "გასუფთავება";
+            this.clearBtn.UseVisualStyleBackColor = true;
+            this.clearBtn.Click += new System.EventHandler(this.clearBtn_Click);
+            // 
             // TodosUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.clearBtn);
             this.Controls.Add(this.addTodoBtn);
             this.Controls.Add(this.editTodoBtn);
             this.Controls.Add(this.priorityValue);
@@ -258,5 +271,6 @@
         private Label priorityLabel;
         private Button editTodoBtn;
         private Button addTodoBtn;
+        private Button clearBtn;
     }
 }

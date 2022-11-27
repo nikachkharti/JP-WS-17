@@ -154,5 +154,21 @@ namespace TodoApp.UI
                 MessageBox.Show(ex.Message);
             }
         }
+
+
+        private void ClearForm()
+        {
+            titleValue.Text = string.Empty;
+            descriptionValue.Text = string.Empty;
+            startDateValue.Value = DateTime.Now;
+            dueDateValue.Value = DateTime.Now;
+            statusValue.Text = "შესასრულებელი";
+            priorityValue.Text = "საშუალო";
+        }
+
+        private void clearBtn_Click(object sender, EventArgs e)
+        {
+            ClearForm();
+        }
     }
 }
