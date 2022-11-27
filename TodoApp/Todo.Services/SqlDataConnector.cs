@@ -7,7 +7,7 @@ namespace Todo.Services
 {
     public class SqlDataConnector : IDataConnection
     {
-        public TodoApp.Library.Todo EditTodo(TodoApp.Library.Todo model)
+        public async Task<TodoApp.Library.Todo> EditTodo(TodoApp.Library.Todo model)
         {
             const string sqlExpression = "sp_editTodo";
 
@@ -15,7 +15,7 @@ namespace Todo.Services
             {
                 try
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
                     SqlCommand command = new(sqlExpression,connection);
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -27,7 +27,7 @@ namespace Todo.Services
                     command.Parameters.AddWithValue("@priority", model.Priority);
                     command.Parameters.AddWithValue("@todoId", model.TodoId);
 
-                    command.ExecuteNonQuery();
+                    await command.ExecuteNonQueryAsync();
 
                 }
                 catch (SqlException)
@@ -36,13 +36,13 @@ namespace Todo.Services
                 }
                 finally
                 {
-                    connection.Close();
+                    await connection.CloseAsync();
                 }
             }
 
             return model;
         }
-        public List<TodoApp.Library.Todo> GetAllTodosPerUser(User model)
+        public async Task<List<TodoApp.Library.Todo>> GetAllTodosPerUser(User model)
         {
             const string sqlExpression = "sp_allSpecificUserTodos";
             List<TodoApp.Library.Todo> result = new();
@@ -51,18 +51,18 @@ namespace Todo.Services
             {
                 try
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
 
                     SqlCommand command = new(sqlExpression, connection);
                     command.CommandType = CommandType.StoredProcedure;
 
                     command.Parameters.AddWithValue("@userId", model.UserId);
 
-                    SqlDataReader reader = command.ExecuteReader();
+                    SqlDataReader reader = await command.ExecuteReaderAsync();
 
                     if (reader.HasRows)
                     {
-                        while (reader.Read())
+                        while (await reader.ReadAsync())
                         {
                             result.Add(new TodoApp.Library.Todo
                             {
@@ -84,13 +84,13 @@ namespace Todo.Services
                 }
                 finally
                 {
-                    connection.Close();
+                    await connection.CloseAsync();
                 }
 
                 return result;
             }
         }
-        public List<User> GetAllUsers()
+        public async Task<List<User>> GetAllUsers()
         {
             const string sqlExpression = "sp_AllUsers";
             List<User> result = new();
@@ -99,15 +99,15 @@ namespace Todo.Services
             {
                 try
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
                     SqlCommand command = new(sqlExpression, connection);
                     command.CommandType = CommandType.StoredProcedure;
 
-                    SqlDataReader reader = command.ExecuteReader();
+                    SqlDataReader reader = await command.ExecuteReaderAsync();
 
                     if (reader.HasRows)
                     {
-                        while (reader.Read())
+                        while (await reader.ReadAsync())
                         {
                             result.Add(new User
                             {
@@ -126,13 +126,13 @@ namespace Todo.Services
                 }
                 finally
                 {
-                    connection.Close();
+                    await connection.CloseAsync();
                 }
 
                 return result;
             }
         }
-        public  User LoginUser(string email)
+        public async Task<User> LoginUser(string email)
         {
             const string sqlExpression = "sp_SingleUser";
             User result = new();
@@ -141,17 +141,17 @@ namespace Todo.Services
             {
                 try
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
                     SqlCommand command = new(sqlExpression, connection);
                     command.CommandType = CommandType.StoredProcedure;
 
                     command.Parameters.AddWithValue("@email", email);
 
-                    SqlDataReader reader = command.ExecuteReader();
+                    SqlDataReader reader = await command.ExecuteReaderAsync();
 
                     if (reader.HasRows)
                     {
-                        while (reader.Read())
+                        while (await reader.ReadAsync())
                         {
                             result.UserId = reader.GetInt32(0);
                             result.FirstName = reader.GetString(1);
@@ -167,14 +167,14 @@ namespace Todo.Services
                 }
                 finally
                 {
-                    connection.Close();
+                    await connection.CloseAsync();
                 }
 
                 return result;
             }
 
         }
-        public User RegisterUser(User model)
+        public async Task<User> RegisterUser(User model)
         {
             const string sqlExpression = "[dbo].[sp_registerUser]";
 
@@ -182,7 +182,7 @@ namespace Todo.Services
             {
                 try
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
                     SqlCommand command = new(sqlExpression, connection);
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -190,7 +190,7 @@ namespace Todo.Services
                     command.Parameters.AddWithValue("@lastName", model.LastName);
                     command.Parameters.AddWithValue("@email", model.Email);
 
-                    command.ExecuteNonQuery();
+                    await command.ExecuteNonQueryAsync();
                 }
                 catch (SqlException)
                 {
@@ -198,7 +198,7 @@ namespace Todo.Services
                 }
                 finally
                 {
-                    connection.Close();
+                    await connection.CloseAsync();
                 }
             }
 

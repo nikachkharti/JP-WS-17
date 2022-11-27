@@ -15,91 +15,13 @@ namespace TodoApp.UI
     public partial class TodosUserControl : UserControl
     {
         private readonly User _loggedInUser;
-        private readonly List<Library.Todo> todosForUser = new();
-        private readonly List<Library.Todo> editedAllTodos = new();
+        List<Library.Todo> allTodosOfUser = new();
 
         public TodosUserControl(User loggedInUser)
         {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
             InitializeComponent();
-
             _loggedInUser = loggedInUser;
-            todosForUser.AddRange(GlobalConfig.ConnectionType.GetAllTodosPerUser(loggedInUser));
-
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
-
-        private void TodosUserControl_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                todoListBox.DataSource = todosForUser;
-                titleValue.Text = todosForUser[todoListBox.SelectedIndex].Title;
-                descriptionValue.Text = todosForUser[todoListBox.SelectedIndex].Description;
-                startDateValue.Value = todosForUser[todoListBox.SelectedIndex].StartDate;
-                dueDateValue.Value = todosForUser[todoListBox.SelectedIndex].DueDate;
-                statusValue.Text = todosForUser[todoListBox.SelectedIndex].Status;
-                priorityValue.Text = todosForUser[todoListBox.SelectedIndex].Priority;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        private void todoListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                 titleValue.Text = todosForUser[todoListBox.SelectedIndex].Title;
-                 descriptionValue.Text = todosForUser[todoListBox.SelectedIndex].Description;
-                 startDateValue.Value = todosForUser[todoListBox.SelectedIndex].StartDate;
-                 dueDateValue.Value = todosForUser[todoListBox.SelectedIndex].DueDate;
-                 statusValue.Text = todosForUser[todoListBox.SelectedIndex].Status;
-                 priorityValue.Text = todosForUser[todoListBox.SelectedIndex].Priority; 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        private void editTodoBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (TextBoxesAreValid() && DateTimesAreValid() && StatusComboBoxIsValid() && PriorityComboBoxIsValid())
-                {
-                    Library.Todo todoToEdit = new()
-                    {
-                        Title = titleValue.Text,
-                        Description = descriptionValue.Text,
-                        StartDate = startDateValue.Value,
-                        DueDate = dueDateValue.Value,
-                        Status = statusValue.Text,
-                        Priority = priorityValue.Text,
-                        TodoId = todosForUser[todoListBox.SelectedIndex].TodoId
-                    };
-
-                    GlobalConfig.ConnectionType.EditTodo(todoToEdit);
-
-                    editedAllTodos.AddRange(GlobalConfig.ConnectionType.GetAllTodosPerUser(_loggedInUser));
-
-                    RefreshWindows();
-
-                    MessageBox.Show("მონაცემები წარმატებით დარედაქტირდა", "მონაცემები დარედაქტირდა", MessageBoxButtons.OK, MessageBoxIcon.Information); 
-                }
-                else
-                {
-                    MessageBox.Show("შემოყვანილი მონაცემები არასწორია", "დაფიქსირდა შეცდომა", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
 
         private bool TextBoxesAreValid()
         {
@@ -118,15 +40,73 @@ namespace TodoApp.UI
             return priorityValue.Text == "დაბალი" || priorityValue.Text == "საშუალო" || priorityValue.Text == "მაღალი" || priorityValue.Text == "გადაუდებელი";
         }
 
-        private void RefreshWindows()
+        private async void TodosUserControl_Load(object sender, EventArgs e)
         {
-            todoListBox.DataSource = editedAllTodos;
-            titleValue.Text = editedAllTodos[todoListBox.SelectedIndex].Title;
-            descriptionValue.Text = editedAllTodos[todoListBox.SelectedIndex].Description;
-            startDateValue.Value = editedAllTodos[todoListBox.SelectedIndex].StartDate;
-            dueDateValue.Value = editedAllTodos[todoListBox.SelectedIndex].DueDate;
-            statusValue.Text = editedAllTodos[todoListBox.SelectedIndex].Status;
-            priorityValue.Text = editedAllTodos[todoListBox.SelectedIndex].Priority;
+            try
+            {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                allTodosOfUser = await GlobalConfig.ConnectionType.GetAllTodosPerUser(_loggedInUser);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
+                todoListBox.DataSource = allTodosOfUser;
+                titleValue.Text = allTodosOfUser[todoListBox.SelectedIndex].Title;
+                descriptionValue.Text = allTodosOfUser[todoListBox.SelectedIndex].Description;
+                startDateValue.Value = allTodosOfUser[todoListBox.SelectedIndex].StartDate;
+                dueDateValue.Value = allTodosOfUser[todoListBox.SelectedIndex].DueDate;
+                statusValue.Text = allTodosOfUser[todoListBox.SelectedIndex].Status;
+                priorityValue.Text = allTodosOfUser[todoListBox.SelectedIndex].Priority;
+            }
+            catch
+            {
+            }
+        }
+
+        private void todoListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                todoListBox.DataSource = allTodosOfUser;
+                titleValue.Text = allTodosOfUser[todoListBox.SelectedIndex].Title;
+                descriptionValue.Text = allTodosOfUser[todoListBox.SelectedIndex].Description;
+                startDateValue.Value = allTodosOfUser[todoListBox.SelectedIndex].StartDate;
+                dueDateValue.Value = allTodosOfUser[todoListBox.SelectedIndex].DueDate;
+                statusValue.Text = allTodosOfUser[todoListBox.SelectedIndex].Status;
+                priorityValue.Text = allTodosOfUser[todoListBox.SelectedIndex].Priority;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}", "დაფიქსირდა შეცდომა", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void editTodoBtn_Click(object sender, EventArgs e)
+        {
+            if (TextBoxesAreValid() && DateTimesAreValid() && StatusComboBoxIsValid() && PriorityComboBoxIsValid())
+            {
+                Library.Todo editedTodo = new()
+                {
+                    TodoId = allTodosOfUser[todoListBox.SelectedIndex].TodoId,
+                    Title = titleValue.Text,
+                    Description = descriptionValue.Text,
+                    StartDate = startDateValue.Value,
+                    DueDate = dueDateValue.Value,
+                    Status = statusValue.Text,
+                    Priority = priorityValue.Text
+                };
+
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                await GlobalConfig.ConnectionType.EditTodo(editedTodo);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
+                //Refreshing data after update
+                allTodosOfUser = await GlobalConfig.ConnectionType.GetAllTodosPerUser(_loggedInUser);
+                todoListBox.DataSource = allTodosOfUser;
+                MessageBox.Show("თქვენს მიერ შემოყვანილი ინფორმაცია წარმატებით დარედაქტირდა", "წარმატებული ინფორმაცია", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("თქვენს მიერ შემოყვანილი ინფორმაცია არ არის კორექტული", "არასწორი ინფორმაცია", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

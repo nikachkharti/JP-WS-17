@@ -10,7 +10,7 @@ namespace TodoApp.UI
             InitializeComponent();
         }
 
-        private void registerBtn_Click(object sender, EventArgs e)
+        private async void registerBtn_Click(object sender, EventArgs e)
         {
             User userToAdd = new()
                 {
@@ -21,10 +21,10 @@ namespace TodoApp.UI
 
             if (EmailIsValid())
             {
-                if (UserIsUnique(userToAdd))
+                if (await UserIsUnique(userToAdd))
                 {
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-                    GlobalConfig.ConnectionType.RegisterUser(userToAdd);
+                    await GlobalConfig.ConnectionType.RegisterUser(userToAdd);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
                     MessageBox.Show("გილოცავთ, თქვენ გაირეთ რეგისტრაცია წარმატებით", "მომხმარებელი დარეგისტრირდა", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ClearForm();
@@ -40,10 +40,15 @@ namespace TodoApp.UI
             }
         }
 
-        private bool UserIsUnique(User userToCheck)
+        private async Task<bool> UserIsUnique(User userToCheck)
         {
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-            return !GlobalConfig.ConnectionType.GetAllUsers().Any(x => x.Email.Equals(userToCheck.Email, StringComparison.OrdinalIgnoreCase));
+
+            //return !GlobalConfig.ConnectionType.GetAllUsers().Any(x => x.Email.Equals(userToCheck.Email, StringComparison.OrdinalIgnoreCase));
+
+            var allUsers = await GlobalConfig.ConnectionType.GetAllUsers();
+            return !allUsers.Any(x => x.Email.Equals(userToCheck.Email, StringComparison.OrdinalIgnoreCase));
+
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
         private void ClearForm()

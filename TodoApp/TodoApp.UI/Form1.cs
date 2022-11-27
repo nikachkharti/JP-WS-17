@@ -17,13 +17,15 @@ namespace TodoApp.UI
             registerUserForm.ShowDialog();
         }
 
-        private void loginBtn_Click(object sender, EventArgs e)
+        private async void loginBtn_Click(object sender, EventArgs e)
         {
             if (EmailIsValid())
             {
-                LoggedInUser = GlobalConfig.ConnectionType.LoginUser(emailValue.Text.Trim());
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                LoggedInUser = await GlobalConfig.ConnectionType.LoginUser(emailValue.Text);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
-                if (UserExists(LoggedInUser))
+                if (await UserExists(LoggedInUser))
                 {
                     DashboardForm dashboardForm = new();
                     dashboardForm.ShowDialog();
@@ -40,11 +42,13 @@ namespace TodoApp.UI
         }
 
 
-        private bool UserExists(User userToCheck)
+        private async Task<bool> UserExists(User userToCheck)
         {
-            var allUsers = GlobalConfig.ConnectionType.GetAllUsers();
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            var allUsers = await GlobalConfig.ConnectionType.GetAllUsers();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
-            if (allUsers.Any(x => x.Email.Equals(userToCheck.Email)))
+            if (allUsers.Any(x => x.Email.Equals(userToCheck.Email,StringComparison.OrdinalIgnoreCase)))
             {
                 return true;
             }
