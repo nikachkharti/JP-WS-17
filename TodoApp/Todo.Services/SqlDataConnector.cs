@@ -42,6 +42,35 @@ namespace Todo.Services
             return model;
         }
 
+        public async Task<TodoApp.Library.Todo> DeleteTodo(TodoApp.Library.Todo model)
+        {
+            const string sqlExpression = "sp_deleteTodo";
+
+            using (SqlConnection connection = new(GlobalConfig.ConnectionString()))
+            {
+                try
+                {
+                    await connection.OpenAsync();
+                    SqlCommand command = new(sqlExpression,connection);
+                    command.CommandType= CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@todoId", model.TodoId);
+
+                    await command.ExecuteNonQueryAsync();
+                }
+                catch (SqlException)
+                {
+                    throw;
+                }
+                finally
+                {
+                    await connection.CloseAsync();
+                }
+            }
+
+            return model;
+        }
+
         public async Task<TodoApp.Library.Todo> EditTodo(TodoApp.Library.Todo model)
         {
             const string sqlExpression = "sp_editTodo";

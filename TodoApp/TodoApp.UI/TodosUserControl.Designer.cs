@@ -44,6 +44,8 @@
             this.editTodoBtn = new System.Windows.Forms.Button();
             this.addTodoBtn = new System.Windows.Forms.Button();
             this.clearBtn = new System.Windows.Forms.Button();
+            this.deletePicture = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.deletePicture)).BeginInit();
             this.SuspendLayout();
             // 
             // todoListBox
@@ -217,7 +219,7 @@
             // clearBtn
             // 
             this.clearBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.clearBtn.Location = new System.Drawing.Point(1049, 5);
+            this.clearBtn.Location = new System.Drawing.Point(1049, 3);
             this.clearBtn.Name = "clearBtn";
             this.clearBtn.Size = new System.Drawing.Size(131, 29);
             this.clearBtn.TabIndex = 7;
@@ -225,11 +227,23 @@
             this.clearBtn.UseVisualStyleBackColor = true;
             this.clearBtn.Click += new System.EventHandler(this.clearBtn_Click);
             // 
+            // deletePicture
+            // 
+            this.deletePicture.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.deletePicture.Image = global::TodoApp.UI.Properties.Resources.delete;
+            this.deletePicture.Location = new System.Drawing.Point(1011, 3);
+            this.deletePicture.Name = "deletePicture";
+            this.deletePicture.Size = new System.Drawing.Size(32, 32);
+            this.deletePicture.TabIndex = 8;
+            this.deletePicture.TabStop = false;
+            this.deletePicture.Click += new System.EventHandler(this.deletePicture_Click);
+            // 
             // TodosUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.deletePicture);
             this.Controls.Add(this.clearBtn);
             this.Controls.Add(this.addTodoBtn);
             this.Controls.Add(this.editTodoBtn);
@@ -249,6 +263,7 @@
             this.Name = "TodosUserControl";
             this.Size = new System.Drawing.Size(1189, 690);
             this.Load += new System.EventHandler(this.TodosUserControl_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.deletePicture)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -272,5 +287,6 @@
         private Button editTodoBtn;
         private Button addTodoBtn;
         private Button clearBtn;
+        private PictureBox deletePicture;
     }
 }

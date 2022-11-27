@@ -170,5 +170,27 @@ namespace TodoApp.UI
         {
             ClearForm();
         }
+
+        private async void deletePicture_Click(object sender, EventArgs e)
+        {
+            DialogResult deleteDialog = MessageBox.Show("ნამდვილად გსურთ საქმის წაშლა? წაშლილის საქმის აღდგენა შეუძლებელია", "საქმის წაშლა", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (deleteDialog == DialogResult.Yes)
+            {
+                Library.Todo todoToDelete = new()
+                {
+                    TodoId = allTodosOfUser[todoListBox.SelectedIndex].TodoId,
+                };
+
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                await GlobalConfig.ConnectionType.DeleteTodo(todoToDelete);
+#pragma warning restore CS8602 // Dereference of a possibly null reference. 
+
+                //Refreshing data after update
+                allTodosOfUser = await GlobalConfig.ConnectionType.GetAllTodosPerUser(_loggedInUser);
+                todoListBox.DataSource = allTodosOfUser;
+                MessageBox.Show("თქვენს მიერ შემოყვანილი საქმე წარმატებით დაემატა", "საქმე დაემატა", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+        }
     }
 }

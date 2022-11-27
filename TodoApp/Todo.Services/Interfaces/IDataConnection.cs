@@ -1,10 +1,5 @@
 ﻿using TodoApp.Library;
 
-// TODO - Register new todo functinality
-// TODO - Edit my profile functionality
-// TODO - Add to favorites
-// TODO - Sort Todos
-
 namespace Todo.Services.Interfaces
 {
     public interface IDataConnection
@@ -48,5 +43,12 @@ namespace Todo.Services.Interfaces
         /// <param name="model">Todo model</param>
         /// <returns>Todo model</returns>
         Task<TodoApp.Library.Todo> AddTodo(TodoApp.Library.Todo model);
+
+        /// <summary>
+        /// Deletes todo from database
+        /// </summary>
+        /// <param name="model">Todo to delete</param>
+        /// <returns>Todo model</returns>
+        Task<TodoApp.Library.Todo> DeleteTodo(TodoApp.Library.Todo model);
     }
 }
