@@ -39,7 +39,6 @@ namespace TodoApp.UI
         {
             return priorityValue.Text == "დაბალი" || priorityValue.Text == "საშუალო" || priorityValue.Text == "მაღალი" || priorityValue.Text == "გადაუდებელი";
         }
-
         private async void TodosUserControl_Load(object sender, EventArgs e)
         {
             try
@@ -83,29 +82,76 @@ namespace TodoApp.UI
         {
             if (TextBoxesAreValid() && DateTimesAreValid() && StatusComboBoxIsValid() && PriorityComboBoxIsValid())
             {
-                Library.Todo editedTodo = new()
+                DialogResult editDialog = MessageBox.Show("ნამდვილად გსურთ საქმის რედაქტირება?", "საქმის რედაქტირება", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (editDialog == DialogResult.Yes)
                 {
-                    TodoId = allTodosOfUser[todoListBox.SelectedIndex].TodoId,
-                    Title = titleValue.Text,
-                    Description = descriptionValue.Text,
-                    StartDate = startDateValue.Value,
-                    DueDate = dueDateValue.Value,
-                    Status = statusValue.Text,
-                    Priority = priorityValue.Text
-                };
+                    Library.Todo editedTodo = new()
+                    {
+                        TodoId = allTodosOfUser[todoListBox.SelectedIndex].TodoId,
+                        Title = titleValue.Text,
+                        Description = descriptionValue.Text,
+                        StartDate = startDateValue.Value,
+                        DueDate = dueDateValue.Value,
+                        Status = statusValue.Text,
+                        Priority = priorityValue.Text
+                    };
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-                await GlobalConfig.ConnectionType.EditTodo(editedTodo);
+                    await GlobalConfig.ConnectionType.EditTodo(editedTodo);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
-                //Refreshing data after update
-                allTodosOfUser = await GlobalConfig.ConnectionType.GetAllTodosPerUser(_loggedInUser);
-                todoListBox.DataSource = allTodosOfUser;
-                MessageBox.Show("თქვენს მიერ შემოყვანილი ინფორმაცია წარმატებით დარედაქტირდა", "წარმატებული ინფორმაცია", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //Refreshing data after update
+                    allTodosOfUser = await GlobalConfig.ConnectionType.GetAllTodosPerUser(_loggedInUser);
+                    todoListBox.DataSource = allTodosOfUser;
+                    MessageBox.Show("თქვენს მიერ შემოყვანილი ინფორმაცია წარმატებით დარედაქტირდა", "წარმატებული ინფორმაცია", MessageBoxButtons.OK, MessageBoxIcon.Information); 
+                }
             }
             else
             {
                 MessageBox.Show("თქვენს მიერ შემოყვანილი ინფორმაცია არ არის კორექტული", "არასწორი ინფორმაცია", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void addTodoBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (TextBoxesAreValid() && DateTimesAreValid() && StatusComboBoxIsValid() && PriorityComboBoxIsValid())
+                {
+                    DialogResult addDialog = MessageBox.Show("ნამდვილად გსურთ საქმის დამატება?", "საქმის დამატება", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (addDialog == DialogResult.Yes)
+                    {
+                        Library.Todo todoToAdd = new()
+                        {
+                            Title = titleValue.Text,
+                            Description = descriptionValue.Text,
+                            StartDate = startDateValue.Value,
+                            DueDate = dueDateValue.Value,
+                            Status = statusValue.Text,
+                            Priority = priorityValue.Text,
+                            UserId = _loggedInUser.UserId
+                        };
+
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                        await GlobalConfig.ConnectionType.AddTodo(todoToAdd);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
+                        //Refreshing data after update
+                        allTodosOfUser = await GlobalConfig.ConnectionType.GetAllTodosPerUser(_loggedInUser);
+                        todoListBox.DataSource = allTodosOfUser;
+                        MessageBox.Show("თქვენს მიერ შემოყვანილი საქმე წარმატებით დაემატა", "საქმე დაემატა", MessageBoxButtons.OK, MessageBoxIcon.Information);  
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("თქვენს მიერ შემოყვანილი ინფორმაცია არ არის კორექტული", "არასწორი ინფორმაცია", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }

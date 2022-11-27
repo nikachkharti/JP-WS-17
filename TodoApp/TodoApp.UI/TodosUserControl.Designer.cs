@@ -211,6 +211,7 @@
             this.addTodoBtn.TabIndex = 6;
             this.addTodoBtn.Text = "ახალი საქმე";
             this.addTodoBtn.UseVisualStyleBackColor = false;
+            this.addTodoBtn.Click += new System.EventHandler(this.addTodoBtn_Click);
             // 
             // TodosUserControl
             // 
