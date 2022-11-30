@@ -50,5 +50,19 @@ namespace Todo.Services.Interfaces
         /// <param name="model">Todo to delete</param>
         /// <returns>Todo model</returns>
         Task<TodoApp.Library.Todo> DeleteTodo(TodoApp.Library.Todo model);
+
+        /// <summary>
+        /// Edits user in database
+        /// </summary>
+        /// <param name="model">User to edit</param>
+        /// <returns>Edited user</returns>
+        Task<User> EditUser(User model);
+
+        /// <summary>
+        /// Get single user from database
+        /// </summary>
+        /// <param name="model">User</param>
+        /// <returns>Single user</returns>
+        Task<User> GetUser(User model);
     }
 }
