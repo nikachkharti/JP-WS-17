@@ -54,11 +54,11 @@
             this.welcomeLabel.Dock = System.Windows.Forms.DockStyle.Right;
             this.welcomeLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.welcomeLabel.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.welcomeLabel.Location = new System.Drawing.Point(1317, 0);
+            this.welcomeLabel.Location = new System.Drawing.Point(1423, 0);
             this.welcomeLabel.Name = "welcomeLabel";
-            this.welcomeLabel.Size = new System.Drawing.Size(145, 28);
+            this.welcomeLabel.Size = new System.Drawing.Size(39, 28);
             this.welcomeLabel.TabIndex = 0;
-            this.welcomeLabel.Text = "გამარჯობა ";
+            this.welcomeLabel.Text = "***";
             // 
             // sidebarPanel
             // 
@@ -134,6 +134,7 @@
             this.myProfileLabel.Size = new System.Drawing.Size(196, 31);
             this.myProfileLabel.TabIndex = 0;
             this.myProfileLabel.Text = "ჩემი პროფილი";
+            this.myProfileLabel.Click += new System.EventHandler(this.myProfileLabel_Click);
             // 
             // planedLabel
             // 
@@ -170,6 +171,7 @@
             this.mainLabel.Size = new System.Drawing.Size(118, 31);
             this.mainLabel.TabIndex = 0;
             this.mainLabel.Text = "მთავარი";
+            this.mainLabel.Click += new System.EventHandler(this.mainLabel_Click);
             // 
             // TodoUserControlPanel
             // 
@@ -191,7 +193,7 @@
             this.Name = "DashboardForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "მთავარი გვერდი";
-            this.Load += new System.EventHandler(this.DashboardForm_Load);
+            this.Activated += new System.EventHandler(this.DashboardForm_Activated);
             this.sidebarPanel.ResumeLayout(false);
             this.sidebarPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

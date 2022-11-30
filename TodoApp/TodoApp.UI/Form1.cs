@@ -27,7 +27,7 @@ namespace TodoApp.UI
 
                 if (await UserExists(LoggedInUser))
                 {
-                    DashboardForm dashboardForm = new();
+                    DashboardForm dashboardForm = new(LoggedInUser);
                     dashboardForm.ShowDialog();
                 }
                 else
