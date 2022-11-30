@@ -106,6 +106,37 @@ namespace Todo.Services
 
             return model;
         }
+        public async Task<User> EditUser(User model)
+        {
+            const string sqlExpression = "sp_editUser";
+
+            using (SqlConnection connection = new(GlobalConfig.ConnectionString()))
+            {
+                try
+                {
+                    await connection.OpenAsync();
+                    SqlCommand command = new(sqlExpression, connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@firstName",model.FirstName);
+                    command.Parameters.AddWithValue("@lastName",model.LastName);
+                    command.Parameters.AddWithValue("@email", model.Email);
+                    command.Parameters.AddWithValue("@userId", model.UserId);
+
+                    await command.ExecuteNonQueryAsync();
+                }
+                catch (SqlException)
+                {
+                    throw;
+                }
+                finally
+                {
+                    await connection.CloseAsync();
+                }
+            }
+
+            return model;
+        }
         public async Task<List<TodoApp.Library.Todo>> GetAllTodosPerUser(User model)
         {
             const string sqlExpression = "sp_allSpecificUserTodos";
@@ -196,6 +227,49 @@ namespace Todo.Services
                 return result;
             }
         }
+
+        public async Task<User> GetUser(User model)
+        {
+            const string sqlExpression = "sp_getSingleUser";
+            User result = new();
+
+            using (SqlConnection connection = new(GlobalConfig.ConnectionString()))
+            {
+                try
+                {
+                    await connection.OpenAsync();
+                    SqlCommand command = new(sqlExpression,connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue(@"userId", model.UserId);
+
+                    SqlDataReader reader = await command.ExecuteReaderAsync();
+
+                    if (reader.HasRows)
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            result.UserId = reader.GetInt32(0);
+                            result.FirstName = reader.GetString(1);
+                            result.LastName = reader.GetString(2);
+                            result.FullName = reader.GetString(3);
+                            result.Email = reader.GetString(4);
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    await connection.CloseAsync();
+                }
+
+                return result;
+            }
+        }
+
         public async Task<User> LoginUser(string email)
         {
             const string sqlExpression = "sp_SingleUser";
